@@ -1,30 +1,46 @@
 import React from "react";
 import {Segment} from "semantic-ui-react";
-import First from "../questions/first/First";
-import Second from "../questions/Second";
+import Question from "./Question";
 
+var index = 1;
 
 class QuestionList extends React.Component {
 
     state = {
-        firstDone: false
+        selectedQuestion: null
     }
 
-    nextQuestion = () => {
-        this.setState({
-            firstDone: true
+
+    componentDidMount() {
+        this.props.questions.map(question => {
+            if (question.id === index) {
+                this.setState({
+                    selectedQuestion: question.Question
+                })
+            }
         })
     }
 
-    
-    
+
+    handleClick = () => {
+        index = ++index;
+        this.props.questions.map(question => {
+            if (question.id === index) {
+                this.setState({
+                    selectedQuestion: question.Question
+                })
+            }
+        })
+    }
+
     render () {
-        return(
-            <Segment secondary compact  >
-                <First nextQuestion = {this.nextQuestion} />
-               {this.state.firstDone && <Second/>} 
-	        </Segment>
-        );
+        return (
+            <Segment compact secondary >
+                <Question questionToDisplay = {this.state.selectedQuestion}
+                handleClick = {this.handleClick}
+                />                    
+            </Segment>
+        )
     }
 }
 
